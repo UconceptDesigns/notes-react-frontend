@@ -33,7 +33,7 @@ export default function FormDialog({ onSubmit, token }) {
     window.location.reload();
   };
 
-  const [user_email, setEmail] = useState(false);
+  const [email, setEmail] = useState(false);
 
   const getEmail = () => {
     if (token != null && token != "") {
@@ -47,12 +47,11 @@ export default function FormDialog({ onSubmit, token }) {
   };
 
   const handleClose = () => {
-    refreshPage();
     setOpen(false);
   };
 
-  const handleOnSubmit = (e, user_email) => {
-    getEmail();
+  const handleOnSubmit = (e, email) => {
+    // getEmail();
     console.log("From FormDialog ", note.title, note.details);
     onSubmit(note.title, note.details);
     e.preventDefault();
@@ -74,6 +73,7 @@ export default function FormDialog({ onSubmit, token }) {
           console.log(error);
           setOpen(false);
         });
+    refreshPage();
     }
   };
   useEffect(() => {
@@ -81,7 +81,7 @@ export default function FormDialog({ onSubmit, token }) {
       getEmail();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user_email]);
+  }, [email]);
   return (
     <div className="btn-add-note">
       <Fab
