@@ -4,32 +4,56 @@ import CustomCard from "./Cards";
 import FormDialog from "./FormDialog";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
-function Notes({ isLogin }) {
+function Notes({ token }) {
   const [notes, setNotes] = useState([]);
   const [open, setOpen] = useState(false);
-  const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/notes";
+
+  // const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/notes";
+  const apiURL = "http://localhost:5000/notes_db/notes";
+
+  const authAxios = axios.create({
+    baseURL: apiURL,
+    headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
+    },
+  });
+
   const data = async () => {
-    axios
-      .get(apiURL)
-      .then((response) => {
-        console.log(response);
-        setNotes(response.data);
-        setOpen(true);
-      })
-      .catch((error) => {
-        console.log(error);
-        setOpen(false);
-      });
+    try {
+      // fetch notes
+      const result = await authAxios.get(apiURL);
+      setNotes(result.data);
+      setOpen(true);
+    } catch (err) {
+      //set request error message
+      console.log(err.message);
+    }
   };
 
-  const handleAddNote = (title, details) => {
+  const [email, setEmail] = useState();
+
+  const getEmail = () => {
+    if (token !== null && token !== "") {
+      let email_jwt = jwt_decode(token);
+      setEmail(email_jwt.sub);
+    }
+  };
+
+  const refreshPage = () => {
+    window.location.reload();
+  };
+
+  const handleAddNote = (title, details, email) => {
     console.log("Title:", title);
-    console.log("Details:", details);
+    console.log("Details: ", details);
+    console.log("the Email: ", email);
+    getEmail();
     const newNote = {
       title: title,
       details: details,
-      user_email: "janetgarcia007@gmail.com",
+      user_email: email,
     };
     const newNoteData = notes.concat(newNote);
     setNotes(newNoteData);
@@ -38,15 +62,18 @@ function Notes({ isLogin }) {
   const handleDeletedNote = (key) => {
     const newNoteData = notes.filter((item) => item._id !== key);
     setNotes(newNoteData);
+    refreshPage();
   };
 
   useEffect(() => {
+    console.log("here notes", token);
+    console.log("token decode", jwt_decode(token));
     if (!open) {
       data();
+      getEmail();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return (
     <div className="App">
       <div>
@@ -80,5 +107,4 @@ function Notes({ isLogin }) {
     </div>
   );
 }
-
 export default Notes;

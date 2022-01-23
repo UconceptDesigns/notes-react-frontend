@@ -7,7 +7,9 @@ import axios from "axios";
 export default function Users() {
   const [users, setUsers] = useState([]);
   const [open, setOpen] = useState(false);
-  const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/users";
+  // const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/users";
+  const apiURL = "http://localhost:5000/notes_db/notes";
+
   const data = async () => {
     axios
       .get(apiURL)

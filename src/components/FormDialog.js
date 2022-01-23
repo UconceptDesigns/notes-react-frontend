@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+// import React from "react";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 import AddIcon from "@mui/icons-material/Add";
 import {
   Button,
@@ -11,31 +13,46 @@ import {
   DialogTitle,
   Fab,
 } from "@mui/material";
-const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/notes";
-
-export default function FormDialog({ onSubmit }) {
+// const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/notes";
+const apiURL = "http://localhost:5000/notes_db/notes";
+export default function FormDialog({ token, onSubmit }) {
   const [open, setOpen] = React.useState(false);
   const [note, setNote] = React.useState({
     title: "",
     details: "",
-    user_email: "janetgarcia007@gmail.com",
+    user_email: "",
   });
+  const authAxios = axios.create({
+    baseURL: apiURL,
+    headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
+    },
+  });
+
+  const [email, setEmail] = useState(false);
+
+  const getEmail = () => {
+    if (token != null && token != "") {
+      let email_jwt = jwt_decode(token);
+      setEmail(email_jwt.sub);
+    }
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-
   const handleOnSubmit = (e) => {
-    onSubmit(note.title, note.details);
+    console.log("From FormDialog ", note.title, note.details, note.email);
+    onSubmit(note.title, note.details, note.email);
     e.preventDefault();
     if (note) {
-      axios
+      authAxios
         .post(apiURL, {
           title: note.title,
           details: note.details,
-          user_email: "janetgarcia007@gmail.com",
+          user_email: note.email,
         }) //{object note}
         .then((response) => {
           if (response.status === 201) {
@@ -50,7 +67,12 @@ export default function FormDialog({ onSubmit }) {
         });
     }
   };
-
+  useEffect(() => {
+    if (!open) {
+      getEmail();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [email]);
   return (
     <div className="btn-add-note">
       <Fab

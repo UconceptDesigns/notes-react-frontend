@@ -1,42 +1,37 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import axios from "axios";
-import useToken from "./UseToken";
+// import userLogin from "../App";
 
 export default function Login({ setToken }) {
   const [loggedName, setLoggedName] = useState();
   const [loggedEmail, setLoggedEmail] = useState();
-  // const [token, setToken] = useState();
 
-  async function loginUser(credentials) {
-    axios
-      .post(
-        "http://localhost:3000/notes_db/user/login",
-        // "https://backend-capstone-janet.herokuapp.com/notes_db/user/login",
-        {
-          name: loggedName,
-          user_email: loggedEmail,
-        }
-      )
+  // const apiURL = "https://backend-capstone-janet.herokuapp.com/login";
+  const apiURL = "http://localhost:5000/login";
+  const authAxios = axios.create({
+    baseURL: apiURL,
+   
+  });
+  const login = async (e) => {
+    e.preventDefault();
+    authAxios
+      .post(apiURL, { name: loggedName , user_email: loggedEmail})
       .then((response) => {
         if (response.status === 200) {
           // generate token and save session storage
-          setToken(response.data);
-          console.log(response.data);
+          const token =  sessionStorage.setItem("token",response.data.access_token);
+          console.log(token);
           window.location.replace("/notes");
-          // history("/notes");
         } else {
-          window.location.replace("/");
-          console.log("Email not found");
+          console.log("Incorrect username or email");
         }
       });
-  }
-
+  };
   return (
     <div>
       <section className="auth">
         <h1>Login</h1>
-        <form onSubmit={loginUser}>
+        <form onSubmit={login}>
           <div className="control">
             <label>Name</label>
             <input

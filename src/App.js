@@ -1,39 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Container } from "@mui/material";
 import Header from "./components/Header";
-import Users from "./components/Users";
 import Notes from "./components/Notes";
 import Login from "./components/Login";
-// import useToken from "./components/UseToken";
-
-function setToken(userToken) {
-  sessionStorage.setItem("token", JSON.stringify(userToken));
-}
-
-function getToken() {
-  const tokenString = sessionStorage.getItem("token");
-  const userToken = JSON.parse(tokenString);
-  return userToken?.token;
-}
 
 export default function App() {
-  // const [token, setToken] = useState();
-  const token = getToken();
+  const [token, setToken] = useState("");
+  const [userToken, setUserToken] = useState("");
+  const [isToken, setIsToken] = useState(false);
 
-  if (!token) {
-    return <Login setToken={setToken} />;
+  const userLogin = (tok) => {
+    setToken(tok);
+  };
+
+  const getToken = () => {
+    const valueToken = sessionStorage.getItem('token');
+
+    console.log("here", userToken);
+    if (valueToken !== null || valueToken !== "") {
+      setToken(valueToken);
+      setIsToken(true);
+    }
+  };
+  useEffect(() => {
+    console.log("Here login boolean", isToken);
+    getToken();
+  }, [token, isToken]);
+
+  if (!isToken) {
+    return <Login setToken={userLogin} />;
   }
 
   return (
     <div className="App">
-      <Header />
+      <Header token={token} />
       <BrowserRouter>
         <Container fixed>
           <Routes>
-            <Route exact path="/" element={<Login />} />
-            <Route path="/notes" element={<Notes />} />
-            <Route path="/users" element={<Users />} />
+            <Route exact path="/" element={<Login userLogin={userLogin} />} />
+            <Route path="/notes" element={<Notes token={token} />} />
           </Routes>
         </Container>
       </BrowserRouter>

@@ -4,9 +4,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
 
-const Header = (props) => {
+const Header = ({ token }) => {
   const handleLogOut = () => {
     sessionStorage.clear();
+    window.location.replace("/");
   };
 
   return (
@@ -32,9 +33,11 @@ const Header = (props) => {
               >
                 My Notes
               </Typography>
-              <Button color="inherit" onClick={handleLogOut}>
-                Logout
-              </Button>
+              {token != null && (
+                <Button color="inherit" onClick={handleLogOut}>
+                  Logout
+                </Button>
+              )}
               {/* <Button color="inherit" onClick={<Login />}>
                 Login
               </Button> */}
