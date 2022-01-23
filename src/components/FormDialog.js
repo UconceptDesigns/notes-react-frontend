@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import React from "react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import AddIcon from "@mui/icons-material/Add";
@@ -15,7 +14,8 @@ import {
 } from "@mui/material";
 // const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/notes";
 const apiURL = "http://localhost:5000/notes_db/notes";
-export default function FormDialog({ token, onSubmit }) {
+
+export default function FormDialog({ onSubmit, token }) {
   const [open, setOpen] = React.useState(false);
   const [note, setNote] = React.useState({
     title: "",
@@ -37,22 +37,26 @@ export default function FormDialog({ token, onSubmit }) {
       setEmail(email_jwt.sub);
     }
   };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
+
   const handleOnSubmit = (e) => {
-    console.log("From FormDialog ", note.title, note.details, note.email);
-    onSubmit(note.title, note.details, note.email);
+    getEmail();
+    console.log("From FormDialog ", note.title, note.details, email);
+    onSubmit(note.title, note.details, note.user_email);
     e.preventDefault();
     if (note) {
       authAxios
         .post(apiURL, {
           title: note.title,
           details: note.details,
-          user_email: note.email,
+          user_email: note.user_email,
         }) //{object note}
         .then((response) => {
           if (response.status === 201) {
