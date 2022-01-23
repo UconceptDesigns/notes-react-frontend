@@ -19,7 +19,7 @@ function Notes({ token }) {
       Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
   });
-
+  // console.log("token being passed to Notes befor Axios :", token);
   const data = async () => {
     try {
       // fetch notes
@@ -45,15 +45,15 @@ function Notes({ token }) {
     window.location.reload();
   };
 
-  const handleAddNote = (title, details, email) => {
+  const handleAddNote = (title, details) => {
     console.log("Title:", title);
     console.log("Details: ", details);
-    console.log("the Email: ", email);
+    console.log("Details: ", email);
     getEmail();
     const newNote = {
       title: title,
       details: details,
-      user_email: email,
+      // user_email: email,
     };
     const newNoteData = notes.concat(newNote);
     setNotes(newNoteData);
@@ -69,11 +69,11 @@ function Notes({ token }) {
     console.log("here notes", token);
     console.log("token decode", jwt_decode(token));
     if (!open) {
-      data();
       getEmail();
+      data();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [email]);
   return (
     <div className="App">
       <div>

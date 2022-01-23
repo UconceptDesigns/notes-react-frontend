@@ -14,12 +14,17 @@ const apiURL = "http://localhost:5000/notes_db/notes/";
 
 const CustomCard = ({ item }) => {
   console.log("Key", item._id);
+
   const authAxios = axios.create({
     baseURL: apiURL,
     headers: {
       Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
   });
+
+  const refreshPage = () => {
+    window.location.reload();
+  };
 
   const handleDeleteNote = () => {
     authAxios
@@ -31,6 +36,7 @@ const CustomCard = ({ item }) => {
         console.log(res);
         console.log(res.data);
       });
+    refreshPage();
   };
 
   const handleEditNote = () => {
@@ -43,6 +49,7 @@ const CustomCard = ({ item }) => {
         console.log(res);
         console.log(res.data);
       });
+    refreshPage();
   };
   return (
     <Card>

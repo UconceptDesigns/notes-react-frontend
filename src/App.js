@@ -7,7 +7,7 @@ import Login from "./components/Login";
 
 export default function App() {
   const [token, setToken] = useState("");
-  const [userToken, setUserToken] = useState("");
+  // const [userToken, setUserToken] = useState("");
   const [isToken, setIsToken] = useState(false);
 
   const userLogin = (tok) => {
@@ -17,14 +17,14 @@ export default function App() {
   const getToken = () => {
     const valueToken = sessionStorage.getItem('token');
 
-    console.log("here", userToken);
+    console.log("here App", token);
     if (valueToken !== null || valueToken !== "") {
       setToken(valueToken);
       setIsToken(true);
     }
   };
   useEffect(() => {
-    console.log("Here login boolean", isToken);
+    console.log("Here login boolean from app", isToken);
     getToken();
   }, [token, isToken]);
 

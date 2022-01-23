@@ -29,7 +29,11 @@ export default function FormDialog({ onSubmit, token }) {
     },
   });
 
-  const [email, setEmail] = useState(false);
+  const refreshPage = () => {
+    window.location.reload();
+  };
+
+  const [user_email, setEmail] = useState(false);
 
   const getEmail = () => {
     if (token != null && token != "") {
@@ -43,13 +47,14 @@ export default function FormDialog({ onSubmit, token }) {
   };
 
   const handleClose = () => {
+    refreshPage();
     setOpen(false);
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = (e, user_email) => {
     getEmail();
-    console.log("From FormDialog ", note.title, note.details, email);
-    onSubmit(note.title, note.details, note.user_email);
+    console.log("From FormDialog ", note.title, note.details);
+    onSubmit(note.title, note.details);
     e.preventDefault();
     if (note) {
       authAxios
@@ -76,7 +81,7 @@ export default function FormDialog({ onSubmit, token }) {
       getEmail();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [email]);
+  }, [user_email]);
   return (
     <div className="btn-add-note">
       <Fab

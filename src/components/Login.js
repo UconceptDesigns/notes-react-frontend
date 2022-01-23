@@ -2,15 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 // import userLogin from "../App";
 
-export default function Login({ setToken }) {
+export default function Login({ setToken, localToken }) {
   const [loggedName, setLoggedName] = useState();
   const [loggedEmail, setLoggedEmail] = useState();
 
   // const apiURL = "https://backend-capstone-janet.herokuapp.com/login";
   const apiURL = "http://localhost:5000/login";
   const authAxios = axios.create({
-    baseURL: apiURL,
-   
+    baseURL: apiURL, 
   });
   const login = async (e) => {
     e.preventDefault();
