@@ -7,7 +7,6 @@ import Login from "./components/Login";
 
 export default function App() {
   const [token, setToken] = useState("");
-  // const [userToken, setUserToken] = useState("");
   const [isToken, setIsToken] = useState(false);
 
   const userLogin = (tok) => {

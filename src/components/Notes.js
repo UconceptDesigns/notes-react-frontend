@@ -45,15 +45,15 @@ function Notes({ token }) {
     window.location.reload();
   };
 
-  const handleAddNote = (title, details) => {
-    console.log("Title:", title);
-    console.log("Details: ", details);
-    console.log("Details: ", email);
+  const handleAddNote = (title, details, email) => {
+    // console.log("Title:", title);
+    // console.log("Details: ", details);
+    // console.log("Email: ", email);
     getEmail();
     const newNote = {
       title: title,
       details: details,
-      // user_email: email,
+      user_email: email,
     };
     const newNoteData = notes.concat(newNote);
     setNotes(newNoteData);
@@ -66,8 +66,8 @@ function Notes({ token }) {
   };
 
   useEffect(() => {
-    console.log("here notes", token);
-    console.log("token decode", jwt_decode(token));
+    // console.log("here notes", token);
+    // console.log("token decode", jwt_decode(token));
     if (!open) {
       getEmail();
       data();

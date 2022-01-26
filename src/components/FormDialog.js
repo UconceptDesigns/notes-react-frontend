@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+// import Notes from "./Notes";
 import jwt_decode from "jwt-decode";
 import AddIcon from "@mui/icons-material/Add";
 import {
@@ -15,13 +16,14 @@ import {
 // const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/notes";
 const apiURL = "http://localhost:5000/notes_db/notes";
 
-export default function FormDialog({ onSubmit, token }) {
+export default function FormDialog({ onSubmit }) {
   const [open, setOpen] = React.useState(false);
   const [note, setNote] = React.useState({
     title: "",
     details: "",
     user_email: "",
   });
+
   const authAxios = axios.create({
     baseURL: apiURL,
     headers: {
@@ -33,15 +35,6 @@ export default function FormDialog({ onSubmit, token }) {
     window.location.reload();
   };
 
-  const [email, setEmail] = useState(false);
-
-  const getEmail = () => {
-    if (token != null && token != "") {
-      let email_jwt = jwt_decode(token);
-      setEmail(email_jwt.sub);
-    }
-  };
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -50,17 +43,18 @@ export default function FormDialog({ onSubmit, token }) {
     setOpen(false);
   };
 
-  const handleOnSubmit = (e, email) => {
-    // getEmail();
-    console.log("From FormDialog ", note.title, note.details);
-    onSubmit(note.title, note.details);
+  const handleOnSubmit = (e) => {
+    const valueToken = sessionStorage.getItem('token');
+    let email_jwt = jwt_decode(valueToken);
+    let user_email = email_jwt.sub;
+    onSubmit(note.title, note.details, user_email);
     e.preventDefault();
     if (note) {
       authAxios
         .post(apiURL, {
           title: note.title,
           details: note.details,
-          user_email: note.user_email,
+          user_email: user_email,
         }) //{object note}
         .then((response) => {
           if (response.status === 201) {
@@ -76,12 +70,7 @@ export default function FormDialog({ onSubmit, token }) {
     refreshPage();
     }
   };
-  useEffect(() => {
-    if (!open) {
-      getEmail();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [email]);
+
   return (
     <div className="btn-add-note">
       <Fab

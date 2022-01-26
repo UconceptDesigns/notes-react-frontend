@@ -7,6 +7,7 @@ import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
 const Header = ({ token }) => {
   const handleLogOut = () => {
     sessionStorage.clear();
+    localStorage.clear();
     window.location.replace("/");
   };
 

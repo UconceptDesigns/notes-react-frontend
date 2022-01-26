@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-// import userLogin from "../App";
 
-export default function Login({ setToken, localToken }) {
+export default function Login({ setToken }) {
   const [loggedName, setLoggedName] = useState();
   const [loggedEmail, setLoggedEmail] = useState();
 
