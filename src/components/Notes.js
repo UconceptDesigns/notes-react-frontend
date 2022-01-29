@@ -63,7 +63,6 @@ function Notes({ token }) {
   const handleDeletedNote = (key) => {
     const newNoteData = notes.filter((item) => item._id !== key);
     setNotes(newNoteData);
-    refreshPage();
   };
 
   useEffect(() => {
@@ -75,6 +74,14 @@ function Notes({ token }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [email]);
+
+  useEffect(() => {
+  if (handleAddNote) {
+    setNotes(notes);
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [notes]);
+
   return (
     <div className="App">
       <div>
