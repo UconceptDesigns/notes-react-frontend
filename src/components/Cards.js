@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import {
   Card,
@@ -25,6 +25,17 @@ const CustomCard = ({ item }) => {
   const refreshPage = () => {
     window.location.reload();
   };
+// new code testing
+  const [noteTitle, setNoteTitle] = useState('');
+  const handleTitleChange = (e) => {
+    setNoteTitle(e.target.value);
+  }
+
+  const [noteDetails, setNoteDetails] = useState('');
+  const handleDetailsChange = (e) => {
+    setNoteDetails(e.target.value);
+  }
+// end new code testing
 
   const handleDeleteNote = () => {
     authAxios
@@ -55,8 +66,8 @@ const CustomCard = ({ item }) => {
     <Card>
       <CardActionArea>
         <CardContent>
-          <Typography variant="h6">{item.title}</Typography>
-          <Typography variant="body2">{item.details}</Typography>
+          <Typography variant="h6" value={noteTitle} >{item.title}</Typography>
+          <Typography variant="body2" className="notes" value={noteDetails} >{item.details}</Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>

@@ -19,18 +19,6 @@ function Notes({ token }) {
       Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
   });
-  // console.log("token being passed to Notes befor Axios :", token);
-  const data = async () => {
-    try {
-      // fetch notes
-      const result = await authAxios.get(apiURL);
-      setNotes(result.data);
-      setOpen(true);
-    } catch (err) {
-      //set request error message
-      console.log(err.message);
-    }
-  };
 
   const [email, setEmail] = useState();
 
@@ -38,6 +26,19 @@ function Notes({ token }) {
     if (token !== null && token !== "") {
       let email_jwt = jwt_decode(token);
       setEmail(email_jwt.sub);
+    }
+  };
+
+  // console.log("token being passed to Notes befor Axios :", token);
+  const data = async () => {
+    try {
+      // fetch notes
+      const result = await authAxios.get(apiURL);
+      setNotes(result.data.filter((note) => note.user_email == email));
+      setOpen(true);
+    } catch (err) {
+      //set request error message
+      console.log(err.message);
     }
   };
 

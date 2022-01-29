@@ -22,6 +22,7 @@ export default function App() {
       setIsToken(true);
     }
   };
+
   useEffect(() => {
     console.log("Here login boolean from app", isToken);
     getToken();
