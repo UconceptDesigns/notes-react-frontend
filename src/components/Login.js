@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 export default function Login({ setToken }) {
   const [loggedName, setLoggedName] = useState();
   const [loggedEmail, setLoggedEmail] = useState();
+  const [isError, setIsError] = useState(true);
+
+  const handleLoginError = () => {
+    setIsError(true);
+  };
 
   // const apiURL = "https://backend-capstone-janet.herokuapp.com/login";
   const apiURL = "http://localhost:5000/login";
@@ -21,10 +28,12 @@ export default function Login({ setToken }) {
           console.log(token);
           window.location.replace("/notes");
         } else {
-          console.log("Incorrect username or email");
+            handleLoginError();
+          }
         }
-      });
+      );
   };
+
   return (
     <div>
       <section className="auth">
@@ -45,6 +54,12 @@ export default function Login({ setToken }) {
               required
               onChange={(e) => setLoggedEmail(e.target.value)}
             />
+          </div>
+          <div>
+            { !isError ? 
+            <Stack sx={{ width: '100%' }} spacing={2}>
+              <Alert severity="warning">Invalid username or email</Alert>
+            </Stack> : null}
           </div>
           <div className="actions">
             <button type="submit">Login</button>

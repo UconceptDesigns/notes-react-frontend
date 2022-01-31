@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import {
   Card,
@@ -31,17 +31,10 @@ const CustomCard = ({ item }) => {
 
   const [open, setOpen] = useState(false);
 
-  const [note, setNote] = useState({
+  const [addCardData, setAddCardData] = useState ({
     _id: item._id,
     title: item.title,
     details: item.details,
-    user_email: item.user_email,
-  });
-
-  const [addCardData, setAddCardData] = useState ({
-    _id: item._id,
-    title: "",
-    details: "",
     user_email: item.user_email,
   })
 
@@ -70,10 +63,10 @@ const CustomCard = ({ item }) => {
 
   const handleUpdateNote = (event) => {
     event.preventDefault();
-    setNote(addCardData);
+    // setNote(addCardData);
     updateDatabase(addCardData);
 
-    console.log("addCardData id: ", addCardData._id);
+    // console.log("addCardData id: ", addCardData._id);
   };
  
   const updateDatabase = (addCardData) => {
@@ -86,10 +79,9 @@ const CustomCard = ({ item }) => {
         console.log(res);
         console.log(res.data);
       });
-      setNote(addCardData);
+      refreshPage();
       handleClose();
-      // refreshPage();
-      console.log("contents of addCardData: ", addCardData);
+      
   };
   
   const handleDeleteNote = () => {
@@ -108,19 +100,12 @@ const CustomCard = ({ item }) => {
     setOpen(true);
   };
 
-  useEffect(() => {
-  if (handleAddCardChange) {
-    setNote(addCardData);
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [note]);
-
   return (
     <div>
       {open ? (
         <div className="btn-add-note">
             <Dialog maxWidth="sm" fullWidth={true} open={open} onClose={handleClose}>
-              <DialogTitle>Add Note</DialogTitle>
+              <DialogTitle>Edit Note</DialogTitle>
               <form onSubmit={handleUpdateNote}>
                 <DialogContent>
                   <DialogContentText>
@@ -128,6 +113,7 @@ const CustomCard = ({ item }) => {
                   </DialogContentText>
                   <TextField
                     onChange={handleAddCardChange}
+                    value = {addCardData.title}
                     autoFocus
                     margin="dense"
                     id="title"
@@ -140,6 +126,7 @@ const CustomCard = ({ item }) => {
                   />
                   <TextField
                     onChange={handleAddCardChange}
+                    value = {addCardData.details}
                     multiline
                     rows={4}
                     margin="dense"

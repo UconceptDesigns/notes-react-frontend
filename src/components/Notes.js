@@ -14,7 +14,7 @@ function Notes({ token }) {
   const apiURL = "http://localhost:5000/notes_db/notes";
 
   const authAxios = axios.create({
-    
+
     baseURL: apiURL,
     headers: {
       Authorization: "Bearer " + sessionStorage.getItem("token"),
@@ -75,9 +75,7 @@ function Notes({ token }) {
   }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notes]);
-/*
-            
-*/
+
   return (
     <div className="App">
       <div>
@@ -95,18 +93,15 @@ function Notes({ token }) {
         ) : (
           <div>
             <Grid container spacing={3}>
-
-             
-             {   notes.map((item) => (
-                  <Grid item md={4} sm={6} xs={12} key={item._id}>
-                    <CustomCard
-                      item={item}
-                      key={item._id}
-                      onDelete={handleDeletedNote}
-                    />
-                  </Grid>
+              {notes.map((item) => (
+                <Grid item md={4} sm={6} xs={12} key={item._id}>
+                  <CustomCard
+                    item={item}
+                    key={item._id}
+                    onDelete={handleDeletedNote}
+                  />   
+            </Grid>
              ))}
-  
             </Grid>
           </div>
         )}
