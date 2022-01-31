@@ -15,8 +15,7 @@ export default function App() {
 
   const getToken = () => {
     const valueToken = sessionStorage.getItem('token');
-
-    console.log("here App", token);
+    // console.log("here App", token);
     if (valueToken !== null || valueToken !== "") {
       setToken(valueToken);
       setIsToken(true);

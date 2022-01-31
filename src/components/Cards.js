@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Card,
@@ -8,40 +8,94 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import {
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 
 // const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/notes";
-const apiURL = "http://localhost:5000/notes_db/notes/";
+const apiURL = "http://localhost:5000/notes_db/notes";
 
 const CustomCard = ({ item }) => {
-  console.log("Key", item._id);
-
   const authAxios = axios.create({
     baseURL: apiURL,
+    method: 'PUT',
     headers: {
       Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
   });
 
+  const [open, setOpen] = useState(false);
+
+  const [note, setNote] = useState({
+    _id: item._id,
+    title: item.title,
+    details: item.details,
+    user_email: item.user_email,
+  });
+
+  const [addCardData, setAddCardData] = useState ({
+    _id: item._id,
+    title: "",
+    details: "",
+    user_email: item.user_email,
+  })
+
+  const handleAddCardChange = (event) => {
+    event.preventDefault();
+    const fieldName = event.target.getAttribute("name");
+    const fieldValue = event.target.value;
+
+    const newCardData = { ...addCardData };
+    newCardData[fieldName] = fieldValue;
+
+    setAddCardData(newCardData);
+  };
+  
+  const handleEditNote = (e) => {
+     handleClickOpen(e);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const refreshPage = () => {
     window.location.reload();
   };
-// new code testing
-  const [noteTitle, setNoteTitle] = useState('');
-  const handleTitleChange = (e) => {
-    setNoteTitle(e.target.value);
-  }
 
-  const [noteDetails, setNoteDetails] = useState('');
-  const handleDetailsChange = (e) => {
-    setNoteDetails(e.target.value);
-  }
-// end new code testing
+  const handleUpdateNote = (event) => {
+    event.preventDefault();
+    setNote(addCardData);
+    updateDatabase(addCardData);
 
+    console.log("addCardData id: ", addCardData._id);
+  };
+ 
+  const updateDatabase = (addCardData) => {
+    
+    authAxios
+      .put(
+        apiURL + `/${addCardData._id}`, addCardData
+      )
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+      });
+      setNote(addCardData);
+      handleClose();
+      // refreshPage();
+      console.log("contents of addCardData: ", addCardData);
+  };
+  
   const handleDeleteNote = () => {
     authAxios
       .delete(
-        // `https://backend-capstone-janet.herokuapp.com/notes_db/notes/${item._id}`
-        apiURL + `${item._id}`
+        apiURL + `/${item._id}`
       )
       .then((res) => {
         console.log(res);
@@ -50,35 +104,80 @@ const CustomCard = ({ item }) => {
     refreshPage();
   };
 
-  const handleEditNote = () => {
-    authAxios
-      .put(
-        // `https://backend-capstone-janet.herokuapp.com/notes_db/notes/${item._id}`
-        apiURL + `${item._id}`
-      )
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-      });
-    refreshPage();
+  const handleClickOpen = () => {
+    setOpen(true);
   };
+
+  useEffect(() => {
+  if (handleAddCardChange) {
+    setNote(addCardData);
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [note]);
+
   return (
-    <Card>
-      <CardActionArea>
-        <CardContent>
-          <Typography variant="h6" value={noteTitle} >{item.title}</Typography>
-          <Typography variant="body2" className="notes" value={noteDetails} >{item.details}</Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary" onClick={() => handleDeleteNote()}>
-          Delete
-        </Button>
-        <Button size="small" color="primary" onClick={() => handleEditNote()}>
-          Edit
-        </Button>
-      </CardActions>
-    </Card>
+    <div>
+      {open ? (
+        <div className="btn-add-note">
+            <Dialog maxWidth="sm" fullWidth={true} open={open} onClose={handleClose}>
+              <DialogTitle>Add Note</DialogTitle>
+              <form onSubmit={handleUpdateNote}>
+                <DialogContent>
+                  <DialogContentText>
+                    Edit your note details below...
+                  </DialogContentText>
+                  <TextField
+                    onChange={handleAddCardChange}
+                    autoFocus
+                    margin="dense"
+                    id="title"
+                    name="title"
+                    label="Title"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    required
+                  />
+                  <TextField
+                    onChange={handleAddCardChange}
+                    multiline
+                    rows={4}
+                    margin="dense"
+                    name="details"
+                    id="details"
+                    label="Details"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    required
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>Cancel</Button>
+                  <Button onClick={handleUpdateNote}>Save Note</Button>
+                </DialogActions>
+              </form>
+            </Dialog>
+          </div>
+        ) : (
+        <Card>
+          <CardActionArea>
+            <CardContent>
+              <Typography variant="h6" name="title" >{item.title}</Typography>
+              <Typography variant="body2" className="notes" name="details" >{item.details}</Typography>
+            </CardContent>
+          </CardActionArea>
+          <CardActions>
+            <Button size="small" color="primary" onClick={() => handleDeleteNote()}>
+              Delete
+            </Button> 
+            <Button size="small" color="primary" onClick={() => handleEditNote()} >
+              Edit
+            </Button>    
+          </CardActions>
+        </Card>
+        )}
+    </div>
   );
 };
 export default CustomCard;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import CustomCard from "./Cards";
 import FormDialog from "./FormDialog";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -14,6 +14,7 @@ function Notes({ token }) {
   const apiURL = "http://localhost:5000/notes_db/notes";
 
   const authAxios = axios.create({
+    
     baseURL: apiURL,
     headers: {
       Authorization: "Bearer " + sessionStorage.getItem("token"),
@@ -42,14 +43,7 @@ function Notes({ token }) {
     }
   };
 
-  const refreshPage = () => {
-    window.location.reload();
-  };
-
   const handleAddNote = (title, details, email) => {
-    // console.log("Title:", title);
-    // console.log("Details: ", details);
-    // console.log("Email: ", email);
     getEmail();
     const newNote = {
       title: title,
@@ -81,23 +75,29 @@ function Notes({ token }) {
   }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notes]);
-
+/*
+            
+*/
   return (
     <div className="App">
       <div>
-        {!open ? (
-          <CircularProgress variant="determinate" />
+        {/*notes.length === 0  &&  (
+                <div className="prompt-title">
+                  <Typography variant="h3" color="textSecondary" component="p">
+                    Add a Note...
+                  </Typography>
+                </div>
+        )*/}
+        { !open ? (
+          <div style={{display: 'flex', justifyContent: 'center'}}>
+          <CircularProgress  color="primary"  />
+          </div>
         ) : (
           <div>
             <Grid container spacing={3}>
-              {notes.length === 0 ? (
-                <div className="prompt-title">
-                  <Typography variant="h3" color="textSecondary" component="p">
-                    <p className="no-notes">Add a Note...</p>
-                  </Typography>
-                </div>
-              ) : (
-                notes.map((item) => (
+
+             
+             {   notes.map((item) => (
                   <Grid item md={4} sm={6} xs={12} key={item._id}>
                     <CustomCard
                       item={item}
@@ -105,8 +105,8 @@ function Notes({ token }) {
                       onDelete={handleDeletedNote}
                     />
                   </Grid>
-                ))
-              )}
+             ))}
+  
             </Grid>
           </div>
         )}

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-// import Notes from "./Notes";
 import jwt_decode from "jwt-decode";
 import AddIcon from "@mui/icons-material/Add";
 import {
@@ -17,8 +16,9 @@ import {
 const apiURL = "http://localhost:5000/notes_db/notes";
 
 export default function FormDialog({ onSubmit }) {
-  const [open, setOpen] = React.useState(false);
-  const [note, setNote] = React.useState({
+  const [open, setOpen] = useState(false);
+  const [note, setNote] = useState({
+    _id: "",
     title: "",
     details: "",
     user_email: "",
