@@ -9,13 +9,14 @@ export default function App() {
   const [token, setToken] = useState("");
   const [isToken, setIsToken] = useState(false);
 
+
   const userLogin = (tok) => {
     setToken(tok);
   };
 
   const getToken = () => {
     const valueToken = sessionStorage.getItem('token');
-    // console.log("here App", token);
+
     if (valueToken !== null || valueToken !== "") {
       setToken(valueToken);
       setIsToken(true);
@@ -23,13 +24,12 @@ export default function App() {
   };
 
   useEffect(() => {
-    console.log("Here login boolean from app", isToken);
     getToken();
   }, [token, isToken]);
 
   if (!isToken) {
-    return <Login setToken={userLogin} />;
-  }
+    return <Login setToken={userLogin}/>;
+  } 
 
   return (
     <div className="App">

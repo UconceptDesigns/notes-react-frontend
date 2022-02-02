@@ -30,7 +30,6 @@ function Notes({ token }) {
     }
   };
 
-  // console.log("token being passed to Notes befor Axios :", token);
   const data = async () => {
     try {
       // fetch notes
@@ -38,7 +37,6 @@ function Notes({ token }) {
       setNotes(result.data.filter((note) => note.user_email == email));
       setOpen(true);
     } catch (err) {
-      //set request error message
       console.log(err.message);
     }
   };
@@ -60,8 +58,6 @@ function Notes({ token }) {
   };
 
   useEffect(() => {
-    // console.log("here notes", token);
-    // console.log("token decode", jwt_decode(token));
     if (!open) {
       getEmail();
       data();
@@ -79,13 +75,6 @@ function Notes({ token }) {
   return (
     <div className="App">
       <div>
-        {/*notes.length === 0  &&  (
-                <div className="prompt-title">
-                  <Typography variant="h3" color="textSecondary" component="p">
-                    Add a Note...
-                  </Typography>
-                </div>
-        )*/}
         { !open ? (
           <div style={{display: 'flex', justifyContent: 'center'}}>
           <CircularProgress  color="primary"  />

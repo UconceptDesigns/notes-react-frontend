@@ -63,10 +63,7 @@ const CustomCard = ({ item }) => {
 
   const handleUpdateNote = (event) => {
     event.preventDefault();
-    // setNote(addCardData);
     updateDatabase(addCardData);
-
-    // console.log("addCardData id: ", addCardData._id);
   };
  
   const updateDatabase = (addCardData) => {
@@ -80,8 +77,7 @@ const CustomCard = ({ item }) => {
         console.log(res.data);
       });
       refreshPage();
-      handleClose();
-      
+      handleClose(); 
   };
   
   const handleDeleteNote = () => {

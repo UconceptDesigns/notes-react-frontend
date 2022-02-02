@@ -39,9 +39,6 @@ const Header = ({ token }) => {
                   Logout
                 </Button>
               )}
-              {/* <Button color="inherit" onClick={<Login />}>
-                Login
-              </Button> */}
             </Toolbar>
           </Container>
         </AppBar>
