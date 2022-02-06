@@ -10,11 +10,10 @@ function Notes({ token }) {
   const [notes, setNotes] = useState([]);
   const [open, setOpen] = useState(false);
 
-  // const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/notes";
-  const apiURL = "http://localhost:5000/notes_db/notes";
+  const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/notes";
+  // const apiURL = "http://localhost:5000/notes_db/notes";
 
   const authAxios = axios.create({
-
     baseURL: apiURL,
     headers: {
       Authorization: "Bearer " + sessionStorage.getItem("token"),
@@ -66,18 +65,18 @@ function Notes({ token }) {
   }, [email]);
 
   useEffect(() => {
-  if (handleAddNote) {
-    setNotes(notes);
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (handleAddNote) {
+      setNotes(notes);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notes]);
 
   return (
     <div className="App">
       <div>
-        { !open ? (
-          <div style={{display: 'flex', justifyContent: 'center'}}>
-          <CircularProgress  color="primary"  />
+        {!open ? (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <CircularProgress color="primary" />
           </div>
         ) : (
           <div>
@@ -88,9 +87,9 @@ function Notes({ token }) {
                     item={item}
                     key={item._id}
                     onDelete={handleDeletedNote}
-                  />   
-            </Grid>
-             ))}
+                  />
+                </Grid>
+              ))}
             </Grid>
           </div>
         )}

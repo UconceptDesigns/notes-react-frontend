@@ -12,8 +12,8 @@ import {
   DialogTitle,
   Fab,
 } from "@mui/material";
-// const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/notes";
-const apiURL = "http://localhost:5000/notes_db/notes";
+const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/notes";
+// const apiURL = "http://localhost:5000/notes_db/notes";
 
 export default function FormDialog({ onSubmit }) {
   const [open, setOpen] = useState(false);

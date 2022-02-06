@@ -17,8 +17,8 @@ import {
   DialogTitle,
 } from "@mui/material";
 
-// const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/notes";
-const apiURL = "http://localhost:5000/notes_db/notes";
+const apiURL = "https://backend-capstone-janet.herokuapp.com/notes_db/notes";
+// const apiURL = "http://localhost:5000/notes_db/notes";
 
 const CustomCard = ({ item }) => {
   const authAxios = axios.create({
