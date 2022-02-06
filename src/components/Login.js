@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
@@ -35,6 +35,14 @@ export default function Login({ setToken }) {
       });
     // setErrorMessage(true); // this is the one triggering the error message
   };
+
+  useEffect(() => {
+    if (errorMessage) {
+      setInterval(() => {
+        setErrorMessage(false);
+      }, 2000);
+    }
+  }, [errorMessage]);
 
   return (
     <div>
