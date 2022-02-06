@@ -9,13 +9,12 @@ export default function App() {
   const [token, setToken] = useState("");
   const [isToken, setIsToken] = useState(false);
 
-
   const userLogin = (tok) => {
     setToken(tok);
   };
 
   const getToken = () => {
-    const valueToken = sessionStorage.getItem('token');
+    const valueToken = sessionStorage.getItem("token");
 
     if (valueToken !== null || valueToken !== "") {
       setToken(valueToken);
@@ -28,7 +27,7 @@ export default function App() {
   }, [token, isToken]);
 
   if (!isToken) {
-    return <Login setToken={userLogin}/>;
+    return <Login setToken={userLogin} />;
   } 
 
   return (
