@@ -2,6 +2,9 @@
   "name": "notes-app",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "14.17.6"
+  },
   "dependencies": {
     "-": "0.0.1",
     "@emotion/react": "^11.5.0",
