@@ -34,7 +34,7 @@ export default function App() {
     <div className="App">
       <Header token={token} />
       <BrowserRouter>
-        <Container fixed>
+        <Container>
           <Routes>
             <Route exact path="/" element={<Login userLogin={userLogin} />} />
             <Route path="/notes" element={<Notes token={token} />} />

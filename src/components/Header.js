@@ -24,7 +24,6 @@ const Header = ({ token }) => {
                 aria-label="Menu"
                 sx={{ mr: 2 }}
               >
-                <MenuIcon />
               </IconButton>
               <Typography
                 variant="h6"
