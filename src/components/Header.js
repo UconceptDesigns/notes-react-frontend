@@ -17,14 +17,6 @@ const Header = ({ token }) => {
         <AppBar position="static">
           <Container>
             <Toolbar>
-              {/* <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="Menu"
-                sx={{ mr: 2 }}
-              >
-              </IconButton> */}
               <Typography
                 variant="h6"
                 component="div"
