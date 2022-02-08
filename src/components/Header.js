@@ -1,8 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
+import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 
 const Header = ({ token }) => {
   const handleLogOut = () => {
